@@ -3,9 +3,14 @@ const db = require('../database/sequelize');
 const validator = require('../services/validator');
 const authorization = require('../services/authorization');
 const bcrypt = require('bcrypt');
+<<<<<<< HEAD
 const auth = require('basic-auth');
 const User = db.user;
 
+=======
+
+const User = db.user;
+>>>>>>> ae29f6eebcb538748d0d2ffd1f3a3dda6c6e736b
 
 exports.createUser = async (req, res) => {
 
@@ -126,6 +131,7 @@ exports.updateUser = async (req, res) => {
 
 }
 
+<<<<<<< HEAD
 //Mock Functions
 
 exports.authorizeTest = (req, res) => {
@@ -183,4 +189,6 @@ exports.creationTest = async (req, res) => {
 
 
 
+=======
+>>>>>>> ae29f6eebcb538748d0d2ffd1f3a3dda6c6e736b
 
