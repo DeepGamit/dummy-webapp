@@ -1,28 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require("cors");
+const app = require('./app');
 
-const app = express();
-
-require('dotenv').config();
-
-app.use(cors());
-
-// Parse Requests of content-type - application/json
-app.use(bodyParser.json());
-
-// Parse Requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Home Page route
-app.get("/", (req, res) => {
-    res.send('Welcome to Web Application');
-});
-
-//Import Routes
-const userRoute = require('./routes/user_routes');
-app.use('/v1/user', userRoute);
-
+// Database Connection
 const db = require("./database/sequelize");
 db.sequelize.sync({ force: true }).then(() => {
     console.log(`Database Connected.`);
