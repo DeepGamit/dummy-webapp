@@ -3,8 +3,9 @@ const db = require('../database/sequelize');
 const validator = require('../services/validator');
 const authorization = require('../services/authorization');
 const bcrypt = require('bcrypt');
-
+const auth = require('basic-auth');
 const User = db.user;
+
 
 exports.createUser = async (req, res) => {
 
@@ -124,5 +125,62 @@ exports.updateUser = async (req, res) => {
     });
 
 }
+
+//Mock Functions
+
+exports.authorizeTest = (req, res) => {
+
+    const credentials = auth(req);
+    if (!credentials || !validator.validateEmail(credentials.name || !credentials.name || !credentials.pass)) {
+        res.setHeader('WWW-Authenticate', 'Basic realm="example"');
+        res.status(401).send({
+            message: "Authorization Failed!!"
+        });
+    }
+    else {
+        res.status(200).send({
+            message: "Authorization Successfull!!"
+        });
+    }  
+}
+
+exports.creationTest = async (req, res) => {
+
+    let email_address = req.body.email_address;
+    let password = req.body.password;
+    let first_name = req.body.first_name;
+    let last_name = req.body.last_name;
+
+    if(email_address && password && first_name && last_name){
+        if(validator.validateEmail(email_address)){
+
+            let passwordErrors = await validator.validatePassword(password);
+            if(passwordErrors.length != 0){
+                res.status(400).send({
+                    message: "Invalid Password"
+                })
+            }
+            
+            
+            res.status(201).send({
+                message: "User created successfully.",
+            });
+        
+        } else {
+
+            res.status(400).send({
+                message: "Invalid Email Address."
+            })
+        }
+        
+
+    } else {
+        res.status(400).send({
+            message: "Please Enter all fields Email_Address, Password, First_Name, Last_Name."
+        });
+    }
+}
+
+
 
 
